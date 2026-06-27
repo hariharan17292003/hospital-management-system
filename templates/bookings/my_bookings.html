@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="bookings-container">
+
+    <div class="bookings-card">
+
+        <div class="bookings-header">
+            <h1>📅 My Bookings</h1>
+            <p>View all your booked doctor appointments.</p>
+        </div>
+
+        {% if bookings %}
+
+        <div class="table-responsive">
+
+            <table class="bookings-table">
+
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Booked On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for booking in bookings %}
+
+                <tr>
+
+                    <td>
+                        Dr.
+                        {{ booking.slot.doctor.user.get_full_name|default:booking.slot.doctor.user.username }}
+                    </td>
+
+                    <td>{{ booking.slot.date }}</td>
+
+                    <td>{{ booking.slot.start_time }}</td>
+
+                    <td>{{ booking.slot.end_time }}</td>
+
+                    <td>{{ booking.created_at|date:"d M Y, h:i A" }}</td>
+
+                    <td>
+
+                        <form method="post"
+                              action="{% url 'bookings:cancel_booking' booking.id %}">
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="cancel-btn"
+                                onclick="return confirm('Are you sure you want to cancel this appointment?');">
+
+                                Cancel
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-booking">
+
+            <div class="empty-icon">🩺</div>
+
+            <h3>No Bookings Yet</h3>
+
+            <p>You haven't booked any appointments.</p>
+
+            <a href="{% url 'patients:dashboard' %}" class="book-btn">
+                Find a Doctor →
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

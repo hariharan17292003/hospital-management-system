@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Doctor Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="doctor-dashboard">
+
+    <div class="doctor-card">
+
+        <div class="doctor-header">
+            <h1>👨‍⚕️ Welcome, Dr. {{ profile.user.get_full_name|default:profile.user.username }}</h1>
+            <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="{% url 'doctors:create_slot' %}" class="dashboard-btn">
+                + Add Availability Slot
+            </a>
+        </div>
+
+        <h2>Your Upcoming Availability</h2>
+
+        {% if slots %}
+
+        <div class="table-responsive">
+
+            <table class="doctor-table">
+
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for slot in slots %}
+
+                <tr>
+
+                    <td>{{ slot.date }}</td>
+
+                    <td>{{ slot.start_time }}</td>
+
+                    <td>{{ slot.end_time }}</td>
+
+                    <td>
+                        {% if slot.is_booked %}
+                            <span class="status booked">Booked</span>
+                        {% else %}
+                            <span class="status open">Open</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if not slot.is_booked %}
+                        <form method="post" action="{% url 'doctors:delete_slot' slot.id %}">
+                            {% csrf_token %}
+                            <button class="remove-btn" type="submit">
+                                Remove
+                            </button>
+                        </form>
+                        {% endif %}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-dashboard">
+            <div class="empty-icon">📅</div>
+            <h3>No Availability Slots</h3>
+            <p>Create your first availability slot for patients.</p>
+        </div>
+
+        {% endif %}
+
+        <div class="recent-bookings">
+
+            <h2>Recent Appointments</h2>
+
+            <a href="{% url 'bookings:doctor_bookings' %}" class="view-btn">
+                View All Appointments →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

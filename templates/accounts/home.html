@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Mini HMS — Home{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>🏥 Mini Hospital Management System</h1>
+
+        <p class="subtitle">
+            Manage appointments, connect patients with doctors, and keep schedules
+            synchronized with Google Calendar—all in one secure platform.
+        </p>
+
+        <div class="hero-buttons">
+            <a class="btn btn-primary" href="{% url 'accounts:signup_patient' %}">
+                👤 I'm a Patient
+            </a>
+
+            <a class="btn btn-secondary" href="{% url 'accounts:signup_doctor' %}">
+                👨‍⚕️ I'm a Doctor
+            </a>
+        </div>
+
+        <p class="login-text">
+            Already have an account?
+            <a href="{% url 'accounts:login' %}">Log in</a>
+        </p>
+    </div>
+</section>
+{% endblock %}

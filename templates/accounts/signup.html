@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up as {{ role }}{% endblock %}
+
+{% block content %}
+
+<div class="signup-container">
+
+    <div class="signup-card">
+
+        <div class="signup-header">
+            <div class="signup-icon">🏥</div>
+
+            <h1>Create {{ role }} Account</h1>
+
+            <p>
+                Register to access the Hospital Management System.
+            </p>
+        </div>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="signup-btn" type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="signup-footer">
+            <p>
+                Already have an account?
+                <a href="{% url 'accounts:login' %}">
+                    Log in
+                </a>
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

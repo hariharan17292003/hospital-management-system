@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}My Appointments{% endblock %}
+
+{% block content %}
+
+<div class="appointments-container">
+
+    <div class="appointments-card">
+
+        <div class="appointments-header">
+            <h1>📅 My Appointments</h1>
+            <p>View all patient appointments assigned to you.</p>
+        </div>
+
+        {% if bookings %}
+
+        <div class="table-responsive">
+
+            <table class="appointments-table">
+
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Date</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Booked On</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                {% for booking in bookings %}
+
+                    <tr>
+                        <td>
+                            {{ booking.patient.user.get_full_name|default:booking.patient.user.username }}
+                        </td>
+
+                        <td>{{ booking.slot.date }}</td>
+
+                        <td>{{ booking.slot.start_time }}</td>
+
+                        <td>{{ booking.slot.end_time }}</td>
+
+                        <td>{{ booking.created_at }}</td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3>No Appointments</h3>
+            <p>No appointments have been booked yet.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

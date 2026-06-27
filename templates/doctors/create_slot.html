@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Add Availability{% endblock %}
+
+{% block content %}
+
+<div class="availability-container">
+
+    <div class="availability-card">
+
+        <div class="availability-header">
+            <h1>🗓️ Add Availability Slot</h1>
+            <p>Create a new appointment slot for patients.</p>
+        </div>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="availability-btn" type="submit">
+                Save Slot
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

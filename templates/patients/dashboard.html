@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Find a Doctor{% endblock %}
+
+{% block content %}
+
+<div class="patient-dashboard">
+
+    <div class="patient-card">
+
+        <div class="patient-header">
+            <h1>🩺 Find a Doctor</h1>
+            <p>Select a doctor and book an available appointment slot.</p>
+        </div>
+
+        {% for row in doctor_rows %}
+
+        <div class="doctor-section">
+
+            <div class="doctor-info">
+                <h2>
+                    👨‍⚕️ Dr.
+                    {{ row.doctor.user.get_full_name|default:row.doctor.user.username }}
+                </h2>
+
+                <span class="specialization">
+                    {{ row.doctor.specialization }}
+                </span>
+            </div>
+
+            {% if row.slots %}
+
+            <div class="table-responsive">
+
+                <table class="doctor-slots-table">
+
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for slot in row.slots %}
+
+                        <tr>
+
+                            <td>{{ slot.date }}</td>
+
+                            <td>{{ slot.start_time }}</td>
+
+                            <td>{{ slot.end_time }}</td>
+
+                            <td>
+
+                                <form method="post" action="{% url 'bookings:create_booking' slot.id %}">
+
+                                    {% csrf_token %}
+
+                                    <button class="book-slot-btn" type="submit">
+                                        Book Appointment
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="no-slot">
+                <p>❌ No available appointment slots.</p>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        {% empty %}
+
+        <div class="empty-doctors">
+            <div class="empty-icon">🏥</div>
+            <h2>No Doctors Available</h2>
+            <p>No doctors have registered yet.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}
